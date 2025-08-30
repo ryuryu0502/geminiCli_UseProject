@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MNP契約情報管理</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>MNP契約情報管理</h1>
+        </header>
+        <main>
+            <section class="input-section">
+                <h2>新規契約情報</h2>
+                <form id="contract-form">
+                    <div class="form-group">
+                        <label for="customer-name">名前:</label>
+                        <input type="text" id="customer-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone-number">電話番号:</label>
+                        <input type="tel" id="phone-number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="carrier">移転元キャリア:</label>
+                        <select id="carrier">
+                            <option value="docomo">docomo</option>
+                            <option value="au">au</option>
+                            <option value="softbank">SoftBank</option>
+                            <option value="rakuten">楽天モバイル</option>
+                            <option value="other">その他</option>
+                        </select>
+                    </div>
+                    <button type="submit">追加</button>
+                </form>
+            </section>
+            <section class="list-section">
+                <h2>契約一覧</h2>
+                <div id="contract-list">
+                    <!-- 契約情報がここに表示されます -->
+                </div>
+            </section>
+            <section class="actions-section">
+                <button id="export-csv">CSV形式でエクスポート</button>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
