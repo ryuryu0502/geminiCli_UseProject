@@ -90,3 +90,27 @@ button:hover {
 .contract-item .delete-btn:hover {
     background-color: #c0392b;
 }
+
+.section-divider {
+    border: 0;
+    height: 1px;
+    background-color: #e0e0e0;
+    margin: 40px 0;
+}
+
+.group-container {
+    margin-bottom: 30px;
+}
+
+.group-container h3 {
+    color: #34495e;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+.no-contract-message {
+    color: #7f8c8d;
+    font-style: italic;
+    padding-left: 10px;
+}
