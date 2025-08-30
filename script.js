@@ -41,11 +41,12 @@ document.addEventListener('DOMContentLoaded', () => {
         contracts.forEach((contract, index) => {
             const item = document.createElement('div');
             item.className = 'contract-item';
-            item.innerHTML = "\n                <div class=\"details\">
+            item.innerHTML = `
+                <div class=\"details\">
                     <strong>${contract.name}</strong> (${contract.phoneNumber}) - ${contract.carrier}
                 </div>
-                <button class=\"delete-btn\" data-index=\"$" + index + "\">削除</button>
-            ";
+                <button class=\"delete-btn\" data-index=\" ${index}\">削除</button>
+            `;
             contractList.appendChild(item);
         });
     }
@@ -60,9 +61,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const phoneInput = document.getElementById('phone-number');
         const carrierInput = document.getElementById('carrier');
 
+        // 入力値の検証
+        const name = nameInput.value.trim();
+        const phoneNumber = phoneInput.value.trim();
+
+        if (!name) {
+            alert('名前を入力してください。');
+            return;
+        }
+        if (!phoneNumber) {
+            alert('電話番号を入力してください。');
+            return;
+        }
+
         const newContract = {
-            name: nameInput.value,
-            phoneNumber: phoneInput.value,
+            name: name,
+            phoneNumber: phoneNumber,
             carrier: carrierInput.value
         };
 
@@ -89,8 +103,41 @@ document.addEventListener('DOMContentLoaded', () => {
      * CSVエクスポート処理
      */
     exportCsvButton.addEventListener('click', () => {
-        // TODO: CSVエクスポート機能を実装する
-        alert('CSVエクスポート機能は未実装です。');
+        if (contracts.length === 0) {
+            alert('エクスポートするデータがありません。');
+            return;
+        }
+
+        // CSVのヘッダーを定義
+        const headers = ['名前', '電話番号', '移転元キャリア'];
+        // CSVの行データを作成
+        const rows = contracts.map(c => [c.name, c.phoneNumber, c.carrier]);
+
+        // ヘッダーと行データを結合
+        let csvContent = headers.join(',') + '\n';
+        rows.forEach(rowArray => {
+            const newRow = rowArray.map(cell => {
+                const stringCell = String(cell || '');
+                if (stringCell.includes(',')) {
+                    return `"${stringCell}"`;
+                }
+                return stringCell;
+            });
+            csvContent += newRow.join(',') + '\n';
+        });
+
+        // BOMを追加してExcelでの文字化けを防ぐ
+        const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+        const blob = new Blob([bom, csvContent], { type: 'text/csv;charset=utf-8;' });
+
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'contracts.csv');
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     });
 
     // 初期化処理
